@@ -1,7 +1,8 @@
 # loading and preprocessing of image data
 
+from __future__ import print_function
 import numpy as np
-import scipy.misc.imread
+from scipy.misc import imread
 
 import os
 import sys
@@ -17,7 +18,7 @@ class PreProcessing:
 
 		letter_dirs = os.listdir(self.train_dir) 
 		letter_dirs = filter(lambda x:x!='.DS_Store', letter_dirs)
-		print(letter_dirs)
+		# print(letter_dirs)
 		for letter_dir in letter_dirs:
 			label_dirs = os.listdir(self.train_dir+'/'+letter_dir) 
 			label_dirs = filter(lambda x:x!='.DS_Store', label_dirs)
@@ -28,12 +29,19 @@ class PreProcessing:
 					img_dir = self.train_dir+'/'+letter_dir +'/'+label_dir + '/'+img_fn
 					img_paths.append(img_dir)
 					img_labels.append(label_dir)
+				img_paths = filter(lambda x:'.DS_Store' not in x, img_paths)
 		return img_paths, img_labels
 
 	def get_img_array(self, img_paths):
 		x = [imread(path) for path in img_paths]
 		x = np.array(x)
 		return x
+
+	def get_classes(y):
+		"""
+		TODO: RETURN LIST OF CLASSES SORTED.
+		"""
+		return
 
 
 
@@ -44,3 +52,4 @@ if __name__ == '__main__':
 	pre = PreProcessing(train_dir)
 	x_paths, y = pre.load_paths_labels()
 	x = pre.get_img_array(x_paths)
+	print(x.shape)
